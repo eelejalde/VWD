@@ -7,6 +7,7 @@
 #	Version     : 1.0
 #	Copyright   : 
 #	Description : Run experiments to test search algorithms, for example "./run_experiments test_dna 40 originalVWD depthfirstVWD"
+#	Modified    : July 13, 2012
 #	============================================================================
 #
 

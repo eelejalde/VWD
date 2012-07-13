@@ -5,6 +5,7 @@
 	Version     : 1.0
 	Copyright   : 
 	Description : Original Vishkin Code
+	Modified    : July 13, 2012
 	============================================================================
 */
 
@@ -98,6 +99,8 @@ void box2(const char*, int , int**, int*, int);
 void box3(const char*, int, int**, int*, int);
 int* box1(const char*, int);
 
+
+/* Check character by character the remaining candidate positions in the last level of LEFT */
 void terminal_stage(const char *P, int m, int **Left, int *Witness, int k) {
   k--;
   int max_j = MAX_K(m)-2;
@@ -111,12 +114,13 @@ void terminal_stage(const char *P, int m, int **Left, int *Witness, int k) {
 	  break;
 	}
       if (Witness[Left[k][j]]==-1) {
-	printf ("Periodicity found at P[%d]\n",Left[k][j]);
+	printf ("Periodicity found at P[%d]\n",Left[k][j]); /* In this stage of our investigation, we only work with non-periodic patterns */
 	exit(EXIT_FAILURE);
       }
     }
 }
 
+/* Vishkin’s duel algorithm */
 void box3(const char *P, int m, int **Left, int *Witness, int k) {
 
   int max_a = floor(m/pow(2,k));
@@ -177,6 +181,7 @@ void box2(const char *P, int m, int **Left, int *Witness, int k) {
 	break;
       }
 
+	/* If we can't verify k-certainty, then we check character by character to discard periodicity */
       if (Witness[x]==-1) {
 	for ( j = max_j; j < m - x ; j++){
 	    if (P[j]!=P[x+j]) {
@@ -184,18 +189,22 @@ void box2(const char *P, int m, int **Left, int *Witness, int k) {
 		break;
 	    }	
 	}
+	/* The pattern is periodic */
 	if (Witness[x]==-1){
-		printf ("Periodicity found at P[%d]\n",x);
+		printf ("Periodicity found at P[%d]\n",x); /* In this stage of our investigation, we only work with non-periodic patterns */
 		exit(EXIT_FAILURE);
 	}
 	else{
+		/* Box3 satisfies k-sparsity (duel candidates) */
 		box3(P, m, Left, Witness, k);	
 	}
       } else {
+	/* Box3 satisfies k-sparsity (duel candidates) */
 	box3(P, m, Left, Witness, k);
       }
     }
   else
+	/* Box3 satisfies k-sparsity (duel candidates) */
     box3(P, m, Left, Witness, k);
 }
 
@@ -243,13 +252,14 @@ int *box1(const char *P, int m) {
   return Witness;
 }
 
+/* StepOne */
 TASK_2(int*, step1, const char*, P, int, m) {
 
   return box1(P,m);
 
 }
 
-
+/* Parallelize duels in the text */
 LOOP_BODY_6( mm, LARGE_BODY, int, a, int*, Witness, int**, Left, int, k, char*, Match, const char*, T, const char*, P)
 {
       if (Left[k-1][2*a+1] == -1)
@@ -283,7 +293,10 @@ LOOP_BODY_6( mm, LARGE_BODY, int, a, int*, Witness, int**, Left, int, k, char*, 
 
 }
 
+/* The search step, whereby the pattern P is searched in the text T */
 TASK_6(void*, step2, const char*, T, const char*, P, size_t, n, size_t, m, int*, Witness, int**, Left) {
+
+	/* Match array M , store potential matches of P in T */
   char *Match;
   int i, k;
 
@@ -292,12 +305,15 @@ TASK_6(void*, step2, const char*, T, const char*, P, size_t, n, size_t, m, int*,
       exit(EXIT_FAILURE);
   }
 
+	/* Initialize the Match array */
   for (i = 0; i < (n-m+1); i++) 
     Match[i] = TRUE;
 
   for (k = 1; k <= MAX_K(m)-1; k++) {
 
     int max_a = floor((n-m+1)/pow(2,k));
+
+	/* Search using Wool parallel_for, parallelizing duels */
     FOR(mm, 0, max_a, Witness, Left, k, Match, T, P);    
   }
 
@@ -310,6 +326,7 @@ LOOP_BODY_6(mm_step3, LARGE_BODY, int, j, const char*, T, const char*, P, int, m
     int t = Left[max_k][j];
     int i;
     if (t != -1)
+	/* Check character by character if the candidate "t" is a real match */
       for (i = 0; i < m; i++)
   		if (T[t+i] != P[i]) {
 		  Match[t] = FALSE;
@@ -317,11 +334,13 @@ LOOP_BODY_6(mm_step3, LARGE_BODY, int, j, const char*, T, const char*, P, int, m
 		}
 }
 
+/* "Verify" step that checks character by character for some occurrence of pattern P using candidates in the last level of LEFT array */
 VOID_TASK_6(step3, const char*, T, const char*, P, int, n, int, m, int**, Left, char*, Match) {
 
   int max_j = (int)floor((n-m+1)/pow(2,MAX_K(m)-1));
   int max_k = MAX_K(m)-1;
 
+	/* Parallelizing  the verification for some ocurrence of pattern P in the text T*/
   FOR(mm_step3, 0, max_j, T, P, m, Left, Match, max_k);
 }
 

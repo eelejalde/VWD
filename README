@@ -1,0 +1,37 @@
+Files, results and testing to the paper "Novel SMP implementations of Vishkin's WitnessDuel algorithm"
+
+Authors : Erick Elejalde, Leo Ferres, José Fuentes and Rodrigo Reyes
+	  Department of Computer Science
+	  Universidad de Concepción
+	  Concepción, Chile
+
+
+##### Files #####
+
+- originalVWD.c: Implementation of the Vishkin's original algorithm to current hierarchical-memory SMP systems.
+- depthfirstVWD.c: Our novel implementation of the Vishkin algorithm.
+- types.h: Setting variables, constants and data types definitions.
+- wool.c and wool.h: Wool code, an instance of the dynamic multithreading model.
+
+
+##### Results #####
+
+- images: Contain image files with results of our experiments.
+
+
+##### Testing #####
+
+- build.sh: Builds executable files of the originalVWD algorithm and depthfirstVWD algorithm.
+- run_experiments.sh: Testing algorithms originalVWD and depthfirstVWD.
+- dna.64MB: text of DNA.
+- english.64MB: text of English.
+- test_dna: Patterns to search in the text of DNA.
+- test_english: Patterns to search in the text of English.
+
+
+	To run experiments, you must to follow the following instructions:
+
+	- First, execute "./build.sh"
+	- and then "./run_experiments.sh test_dna 40 originalVWD depthfirstVWD" (using DNA patterns and maximum of 40 threads)
+
+Modified: July 13, 2012.

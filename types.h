@@ -1,9 +1,13 @@
 /*
- * types.h
- *
- *  Created on: 12 Feb 2012
- *      Author: rodrigo
- */
+	============================================================================
+	Name        : types.h
+	Author      : Azu Parallel Algorithms and Systems Lab
+	Version     : 1.0
+	Copyright   : 
+	Description : Setting variables, constants and data types definitions
+	Modified    : July 13, 2012
+	============================================================================
+*/
 
 #ifndef TYPES_H_
 #define TYPES_H_
