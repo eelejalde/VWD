@@ -304,7 +304,7 @@ TASK_2(int, main, int, argc, char**, argv) {
   int i;
   
   if (argc <= 1) {
-    printf("Usage: tpar <text-pattern file>.\n");
+    printf("Usage: depthfirstVWD <text-pattern file>.\n");
     return -1; /*Wrong number of arguments*/
   }
   
@@ -348,7 +348,7 @@ TASK_2(int, main, int, argc, char**, argv) {
       for(i=0; i< numThreads; i++)
 		res += totals[i];
 
-      printf("depth_first_vishkin: %lf ms (%zu matches)\n", t, res);
+      printf("depthfirstVWD: %lf ms (%zu matches)\n", t, res);
 	  free(totals);
     }
 	    

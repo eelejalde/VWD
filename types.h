@@ -24,16 +24,16 @@
 #define REHASH(a, b, h) ((((h) - (a)*d) << 1) + (b))
 
 /* Length of buffer to use for performance tests: 64MB. */
-#define BIGSTRINGLEN 67108865 //33554432
+#define BIGSTRINGLEN 67108865
 /*For lines in the input file.*/
-#define LINE_WIDTH 288
+#define LINE_WIDTH 1300
 /*Only 64 possible files with patterns.*/
-#define NUM_TEST_FILES 64
+#define NUM_TEST_FILES 100
 
 /*The TDATA structure*/
 struct test_data {
 	char path[255];
-	char pattern[255];
+	char pattern[1024];
 	int numThreads;
 };
 

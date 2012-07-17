@@ -404,7 +404,7 @@ TASK_2(int, main, int, argc, char**, argv) {
   double t;
   
   if (argc <= 1) {
-    printf("Usage: tpar <text-pattern file>.\n");
+    printf("Usage: originalVWD <text-pattern file>.\n");
     return -1; /*Wrong number of arguments*/
   }
   
@@ -443,7 +443,7 @@ TASK_2(int, main, int, argc, char**, argv) {
        /* Compute time taken and add it to the sums. */
        t = (etime.tv_sec - stime.tv_sec) + (etime.tv_usec - stime.tv_usec)/ 1000000.0;
 
-       printf("pvishkin: %lf ms (%zu matches)\n", t, res);
+       printf("OriginalVWD: %lf ms (%zu matches)\n", t, res);
     }
 	    
     memset(bigstring, '\0', BIGSTRINGLEN);
